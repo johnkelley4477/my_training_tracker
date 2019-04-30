@@ -1,0 +1,35 @@
+
+.accordion {
+  background-color: #03c03c;
+  color: #fff;
+  cursor: pointer;
+  padding: 18px 0px 18px 18px;
+  width: 100%;
+  text-align: left;
+  border: #36f36f 1px solid;
+  outline: none;
+  transition: 0.4s;
+  font-size: 1.2em;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover, .sub:hover {
+  background-color: #36f36f;
+  color: #000;
+}
+.panel{
+  margin-top: 0px;
+  padding: 10px;
+  max-width: 360px;
+  width:130px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+input[type="number"]{
+    margin-right: auto;
+    margin-left: auto;
+}
+.panel div{
+  display: flex;
+}

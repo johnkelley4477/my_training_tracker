@@ -1,0 +1,171 @@
+/* elements */
+input{
+	border-radius: 15px;
+	border:#03c03c 2px solid;
+	padding:5px;
+	font-size: 1.2em;
+	max-width: 400px;
+	width:90%;
+	margin-left: 4%;
+	margin-right: 4%;
+	display: block;
+	text-align: center;
+}
+input[type="submit"], input[type="button"] {
+	background-color: #03c03c;
+    color: #fff;
+    width: 150px;
+		max-width: 400px;
+    margin-left: auto;
+}
+input[type="submit"]:disabled{
+	background-color: #ccc;
+    color: #000;
+}
+input[type="number"]{
+    width: 110px;
+}
+label{
+	color: #03c03c;
+    background: #fff;
+    position: relative;
+    margin-top: 7px;
+    margin-left: 10px;
+    top: 20px;
+}
+body{
+	font-family: sans-serif;
+	margin: 0px;
+}
+
+/* layout by class */
+.grid-parent{
+	width: 100%;
+}
+.grid10{
+	width: 10%;
+}
+.grid20{
+	width: 20%;
+}
+.grid30{
+	width: 30%;
+}
+.grid40{
+	width: 40%;
+}
+.grid50{
+	width: 50%;
+}
+.grid60{
+	width: 60%;
+}
+.grid70{
+	width: 70%;
+}
+.grid80{
+	width: 80%;
+}
+.grid90{
+	width: 90%;
+}
+.grid25{
+	width: 25%;
+}
+.grid75{
+	width: 75%;
+}
+.grid33{
+	width: 33%;
+}
+.grid66{
+	width: 66%;
+}
+
+/* margins */
+.mt10{
+	margin-top: 10px;
+}
+.mt15{
+	margin-top: 15px;
+}
+.mt60{
+	margin-top: 60px;
+}
+
+.mb10{
+	margin-bottom: 10px;
+}
+.mb15{
+	margin-bottom: 15px;
+}
+.mb60{
+	margin-bottom: 60px;
+}
+.center{
+	margin-left: auto;
+	margin-right: auto;
+}
+.f_right{
+	float: right;
+}
+.f_left{
+	float: left;
+}
+
+/* general class styling */
+.frame{
+	background-color: #effffa;
+	border:#03c03c 2px solid;
+	width:90%;
+	margin-left: 4%;
+	margin-right: 4%;
+	border-radius: 15px;
+	padding:15px 5px;
+}
+.frame h2{
+    margin: 10px 0px;
+}
+.flex{
+	display: flex;
+}
+.no_dec{
+	text-decoration: none;
+}
+.text_center{
+	text-align: center;
+}
+.error{
+	border-radius: 15px;
+	border:#f00 2px solid;
+	color:#f00;
+	background-color: #fdd;
+	text-align: center;
+	padding: 10px;
+	width:86%;
+	margin-left: 4%;
+	margin-bottom: 10px;
+}
+.sub {
+    font-size: 0.9em;
+    float: right;
+    color: #effffa;
+    margin-right: 30px;
+}
+.form {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.font_large{
+	font-size: 2.5em;
+}
+.comments{
+	width: 90%;
+	font-size: 1.2em;
+  height: 100px;
+	margin-left: 5%;
+	margin-right:5%;
+	border-radius: 15px;
+	border:#03c03c 2px solid;
+	padding:5px;
+}

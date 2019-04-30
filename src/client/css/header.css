@@ -1,0 +1,36 @@
+.Header{
+	height:50px;
+	text-align: center;
+	background-color: #03c03c;
+	color: #fff;
+}
+
+.Header span{	
+	margin:auto auto;
+	font-size:1.5em;
+	font-weight: 200;
+	height:30px;
+	margin-top: 5px;
+}
+
+#menu_click{
+	float:left;
+	color: #fff;
+	margin-left: 5px;
+	margin-top: 10px;
+}
+
+#menu{
+	position: fixed;
+	top: 50px;
+	left: 0px;
+}
+#menu a{
+	display: block;
+	text-decoration: none;
+	font-size: 1.2em;
+	padding: 5px 10px;
+	color: #fff;
+	background-color: #03c03c;
+	border-top: 1px #fff solid;
+}
