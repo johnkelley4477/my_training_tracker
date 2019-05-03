@@ -37,7 +37,9 @@ body{
 	font-family: sans-serif;
 	margin: 0px;
 }
-
+ul.none{
+	list-style-type: none;
+}
 /* layout by class */
 .grid-parent{
 	width: 100%;
@@ -135,6 +137,15 @@ body{
 .text_center{
 	text-align: center;
 }
+.text_left{
+	text-align: left;
+}
+.text_right{
+	text-align: right;
+}
+.mr30per{
+	margin-right: 30%;
+}
 .error{
 	border-radius: 15px;
 	border:#f00 2px solid;
@@ -158,6 +169,9 @@ body{
 }
 .font_large{
 	font-size: 2.5em;
+}
+.bold{
+	font-weight: bold;
 }
 .comments{
 	width: 90%;

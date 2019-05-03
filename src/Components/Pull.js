@@ -70,7 +70,7 @@ class Pull extends React.Component {
 	}
 	handleSubmit(e){
 		e.preventDefault();
-		const dateT = new Date(this.state.date).getTime()
+		const dateT = new Date(this.state.date).getTime();
 		const pull = {
 			timestamp: dateT,
 			date: this.state.date,

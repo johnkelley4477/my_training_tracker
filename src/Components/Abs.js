@@ -83,7 +83,9 @@ class Abs extends React.Component {
 	}
 	handleSubmit(e){
 		e.preventDefault();
+		const dateT = new Date(this.state.date).getTime();
 		const abs = {
+			timestamp: dateT,
 			date: this.state.date,
 			scissors: this.state.scissors,
 			russianTwist: this.state.russianTwist,

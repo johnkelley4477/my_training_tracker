@@ -13,7 +13,7 @@ import Abs from './Components/Abs';
 import Home from './Components/Home';
 import Spartan from './Components/Spartan';
 import PullStats from './Components/PullStats';
-import Hooks from './Components/hooks';
+import PushStats from './Components/PushStats';
 //import ExerciseListItem from './Components/ExerciseListItem';
 /* client side static */
 import "./client/css/general.css"
@@ -36,11 +36,11 @@ class App extends Component {
           displayName: FBUser.displayName,
           userID: FBUser.uid
         });
-        const pulls = firebase.database().ref('Pull/' + FBUser.uid).orderByChild("date").limitToLast(1);
-        const pushes = firebase.database().ref('Push/' + FBUser.uid).orderByChild("date").limitToLast(1);
-        const abs = firebase.database().ref('Abs/' + FBUser.uid).orderByChild("date").limitToLast(1);
-        const legs = firebase.database().ref('Legs/' + FBUser.uid).orderByChild("date").limitToLast(1);
-        const spartan = firebase.database().ref('Spartan/' + FBUser.uid).orderByChild("date").limitToLast(1);
+        const pulls = firebase.database().ref('Pull/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
+        const pushes = firebase.database().ref('Push/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
+        const abs = firebase.database().ref('Abs/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
+        const legs = firebase.database().ref('Legs/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
+        const spartan = firebase.database().ref('Spartan/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
         const last = {"Spartan":this.state.last.Spartan,"Pull":this.state.last.Pull, "Push":this.state.last.Push, "Abs":this.state.last.Abs, "Legs":this.state.last.Legs};
         //get Pulls Spartan date done
         spartan.on('value',snapshot => {
@@ -128,7 +128,7 @@ class App extends Component {
               <Home path="/" last= {this.state.last}/>
               <Spartan path="/spartan" user={this.state.userID}/>
               <PullStats path="/stats/pull" user={this.state.userID}/>
-              <Hooks path="/hooks" />
+              <PushStats path="/stats/push" user={this.state.userID}/>
               <Login path="/login" />
           </Router>
         </div>

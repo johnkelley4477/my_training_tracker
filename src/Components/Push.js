@@ -50,7 +50,9 @@ class Push extends React.Component {
 	}
 	handleSubmit(e){
 		e.preventDefault();
+		const dateT = new Date(this.state.date).getTime();
 		const push = {
+			timestamp: dateT,
 			date: this.state.date,
 			diamond: this.state.diamond,
 			standsWide: this.state.standsWide,
@@ -75,7 +77,7 @@ class Push extends React.Component {
 		return [year, month, day].join('-');
 	}
 	render(){
-		
+
 		return(
 			<form onSubmit= {e => {this.handleSubmit(e)}} className="form">
 				<h2>Push Workout</h2>
@@ -93,7 +95,7 @@ class Push extends React.Component {
 						<label htmlFor="standsWide">count</label>
 						<input type="number" id="standsWide"  name="standsWide" value={this.state.standsWide} className="mt15" onChange={this.handleChange}/>
 					</div>
-				)}	
+				)}
 				<div className="accordion" onClick={() => this.panelSwitch(this.state.showPanel3, "showPanel3")}>Set 3 Stands Shoulder <span className='sub'>{this.state.standsShoulder} reps</span></div>
 				{this.state.showPanel3 && (
 					<div className="panel">

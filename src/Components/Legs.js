@@ -55,7 +55,9 @@ class Legs extends React.Component {
 	}
 	handleSubmit(e){
 		e.preventDefault();
+		const dateT = new Date(this.state.date).getTime();
 		const legs = {
+			timestamp: dateT,
 			date: this.state.date,
 			lungeSet1: this.state.lungeSet1,
 			squatSet1: this.state.squatSet1,

@@ -47,45 +47,41 @@ class PullStats extends React.Component {
           displayName: FBUser.displayName,
           userID: FBUser.uid
         });
-        const pullstats = firebase.database().ref('Pull/' + FBUser.uid);
-        pullstats.orderByChild('date').on('value',snapshot => {
+        let pullsList = [];
+        let chartData = {labels:[],datasets:[
+          {label:"Climbs reps",data:[],backgroundColor:['rgba(0,255,255,0.5)']},
+          {label:"Total pullups",data:[],backgroundColor:['rgba(255,0,0,0.5)']},
+          {label:"Avg hang time",data:[],backgroundColor:['rgba(0,255,0,0.5)']}
+        ]};
+        const pullstats = firebase.database().ref('Pull/' + FBUser.uid).orderByChild('timestamp');
+        pullstats.on('child_added',snapshot => {
           const FBPullsStats = snapshot.val();
-          let pullsList = [];
-          let chartData = {labels:[],datasets:[
-            {label:"Climbs reps",data:[],backgroundColor:['rgba(0,255,255,0.5)']},
-            {label:"Total pullups",data:[],backgroundColor:['rgba(255,0,0,0.5)']},
-            {label:"Avg hang time",data:[],backgroundColor:['rgba(0,255,0,0.5)']}
-          ]};
-
           let i = 0;
-          for(let pull in FBPullsStats){
-            FBPullsStats[pull].id = pull;
-            pullsList.push(FBPullsStats[pull]);
-            let showPull = {};
-            showPull[`showPull${i}`] = false;
-            this.setState(showPull);
-            /* Build out chart data */
-            chartData.labels.push(this.formateDate(FBPullsStats[pull].date));
-            chartData.datasets[0].data.push(FBPullsStats[pull].rope);
-            chartData.datasets[1].data.push(
-              parseInt(FBPullsStats[pull].shoulder1) +
-              parseInt(FBPullsStats[pull].shoulder2) +
-              parseInt(FBPullsStats[pull].shoulder3) +
-              parseInt(FBPullsStats[pull].together1) +
-              parseInt(FBPullsStats[pull].together2) +
-              parseInt(FBPullsStats[pull].together3) +
-              parseInt(FBPullsStats[pull].wide1) +
-              parseInt(FBPullsStats[pull].wide2) +
-              parseInt(FBPullsStats[pull].wide3)
-            )
-            chartData.datasets[2].data.push((
-                parseInt(FBPullsStats[pull].hang1) +
-                parseInt(FBPullsStats[pull].hang2) +
-                parseInt(FBPullsStats[pull].hang3)
-              )/3
-            )
-            i++;
-          }
+          pullsList.push(FBPullsStats);
+          let showPull = {};
+          showPull[`showPull${i}`] = false;
+          this.setState(showPull);
+          /* Build out chart data */
+          chartData.labels.push(this.formateDate(FBPullsStats.date));
+          chartData.datasets[0].data.push(FBPullsStats.rope);
+          chartData.datasets[1].data.push(
+            parseInt(FBPullsStats.shoulder1) +
+            parseInt(FBPullsStats.shoulder2) +
+            parseInt(FBPullsStats.shoulder3) +
+            parseInt(FBPullsStats.together1) +
+            parseInt(FBPullsStats.together2) +
+            parseInt(FBPullsStats.together3) +
+            parseInt(FBPullsStats.wide1) +
+            parseInt(FBPullsStats.wide2) +
+            parseInt(FBPullsStats.wide3)
+          )
+          chartData.datasets[2].data.push((
+              parseInt(FBPullsStats.hang1) +
+              parseInt(FBPullsStats.hang2) +
+              parseInt(FBPullsStats.hang3)
+            )/3
+          )
+          i++;
           this.setState({pullsList: pullsList,chartData:chartData});
         });
       }else{
@@ -114,18 +110,19 @@ class PullStats extends React.Component {
   render(){
     return(
       <div>
-        <div className="chart">
+        <h3 className="text_center">Pull Ups set 1</h3>
+        <div className="chart mb15">
           <Line data={this.state.chartData}/>
         </div>
         {this.state.pullsList.map((pull,i) => {
           return(
             <div>
-              <div className="accordion mt15" onClick={() => this.panelSwitch(this.state[`showPull${i}`], `showPull${i}`)}>
+              <div className="accordion" onClick={() => this.panelSwitch(this.state[`showPull${i}`], `showPull${i}`)}>
                 {this.formateDate(pull.date)}
               </div>
               {this.state[`showPull${i}`] && (
                 <div className="panel">
-                  <input type="button" className="f_right mb10" value="Delete" onClick={e => this.deleteRecord(e, pull.id)}/>
+                  <input type="button" className="center mb10" value="Delete" onClick={e => this.deleteRecord(e, pull.id)}/>
                   <h3 className="text_center">Pull Ups set 1</h3>
                   <div className="grid-parent">
                     <div className="grid33">{pull.together1} reps together</div>
