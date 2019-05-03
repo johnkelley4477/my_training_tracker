@@ -74,7 +74,7 @@ class Legs extends React.Component {
 			.database()
 			.ref(`Legs/${this.props.user}`);
 		ref.push(legs);
-		navigate('/');
+		navigate('/stats/legs');
 	}
 	formatDate(date){
 		var d = date,

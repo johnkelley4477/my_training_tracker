@@ -125,7 +125,7 @@ function PullStats(props) {
                 <div className="grid33">{pull.hang2} seconds</div>
                 <div className="grid33">{pull.hang3} seconds</div>
               </div>
-              <div className="grid-parent">
+              <div className="comments mt15">
                 {pull.comments}
               </div>
               <input type="button" className="center mt15" value="Delete" onClick={e => deleteRecord(e, pull.id)}/>
