@@ -1,6 +1,7 @@
 /* Third party*/
 import React, {useState, useEffect} from 'react';
 import { Line } from 'react-chartjs-2';
+import {navigate} from '@reach/router';
 //import {navigate} from '@reach/router';
 /* Components */
 import firebase from './Firebase';
@@ -21,9 +22,9 @@ function PushStats(){
   }
   function deleteRecord(e,id) {
     e.preventDefault();
-    console.log(`Push/${userId}/${id}`);
     const ref = firebase.database().ref(`Push/${userId}/${id}`);
     ref.remove();
+		navigate('/stats/pull');
   }
   useEffect(() => {
     let chartData = {
@@ -80,8 +81,7 @@ function PushStats(){
             }}>
               {formateDate(push.date)} <span className="sub">{push.total.toString()} push-ups</span>
             </div>
-          <div id={"panel" + i} className="panel" style={panelStyle}>
-              <input type="button" className="center mb10" value="Delete" onClick={e => deleteRecord(e, push.id)}/>
+            <div id={"panel" + i} className="panel" style={panelStyle}>
               <ul className="none text_right mr30per">
                 <li><span className="bold" >Diamond</span> {push.diamond} reps</li>
                 <li><span className="bold" >Stands Wide</span> {push.standsWide} reps</li>
@@ -89,6 +89,7 @@ function PushStats(){
                 <li><span className="bold" >Decline</span> {push.decline} reps</li>
                 <li><span className="bold" >Level</span> {push.level} reps</li>
               </ul>
+              <input type="button" className="center mt10" value="Delete" onClick={e => deleteRecord(e, push.id)}/>
             </div>
           </div>
         )

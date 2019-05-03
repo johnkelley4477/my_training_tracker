@@ -93,7 +93,7 @@ class Pull extends React.Component {
 			.database()
 			.ref(`Pull/${this.props.user}`);
 		ref.push(pull);
-		navigate('/');
+		navigate('/stats/pull');
 	}
 	formatDate(date){
 		var d = date,

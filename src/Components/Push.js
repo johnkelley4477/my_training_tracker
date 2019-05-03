@@ -64,7 +64,7 @@ class Push extends React.Component {
 			.database()
 			.ref(`Push/${this.props.user}`);
 		ref.push(push);
-		navigate('/');
+		navigate('/stats/push');
 	}
 	formatDate(date){
 		var d = date,
