@@ -15,6 +15,7 @@ import Spartan from './Components/Spartan';
 import PullStats from './Components/PullStats';
 import PushStats from './Components/PushStats';
 import LegsStats from './Components/LegsStats';
+import AbsStats from './Components/AbsStats';
 //import ExerciseListItem from './Components/ExerciseListItem';
 /* client side static */
 import "./client/css/general.css"
@@ -131,6 +132,7 @@ class App extends Component {
               <PullStats path="/stats/pull" user={this.state.userID}/>
               <PushStats path="/stats/push" user={this.state.userID}/>
               <LegsStats path="/stats/legs" user={this.state.userID}/>
+              <AbsStats path="/stats/abs" user={this.state.userID}/>
               <Login path="/login" />
           </Router>
         </div>

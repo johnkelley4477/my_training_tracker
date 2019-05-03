@@ -75,7 +75,7 @@ function LegsStats(){
   }
   return(
     <div>
-      <h3>Push Stats</h3>
+      <h3>Legs Stats</h3>
       <Line className="mb15" data={chartData}/>
       {legsList.map((legs,i) => {
         return(

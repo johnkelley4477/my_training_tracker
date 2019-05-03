@@ -8,9 +8,9 @@ import firebase from './Firebase';
 /* Client side */
 import '../client/css/accordion.css';
 
-function PushStats(){
+function AbsStats(){
   const [chartData, setChartData] = useState({});
-  const [pushList, setPushList] = useState([]);
+  const [absList, setAbsList] = useState([]);
   const [userId, setUserId] = useState(null);
   function formateDate(d){
     const dsplit = d.split('-');
@@ -22,32 +22,37 @@ function PushStats(){
   }
   function deleteRecord(e,id) {
     e.preventDefault();
-    const ref = firebase.database().ref(`Push/${userId}/${id}`);
+    const ref = firebase.database().ref(`Abs/${userId}/${id}`);
     ref.remove();
-		navigate('/stats/pull');
+		navigate('/stats/abs');
   }
   useEffect(() => {
     let chartData = {
       labels:[],
-      datasets:[{label:"Total push ups",data:[],backgroundColor:['rgba(0,255,255,0.5)']}]
+      datasets:[{label:"Total Abs work min",data:[],backgroundColor:['rgba(0,255,255,0.5)']}]
     }
-    let pushList = [];
+    let absList = [];
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
         setUserId(FBUser.uid);
-        const pushstats = firebase.database().ref('Push/' + FBUser.uid);
-        pushstats.orderByChild('timestamp').on('child_added',snapshot => {
-          const FBPushStats = snapshot.val();
-          FBPushStats.id = snapshot.key;
-          const total = parseInt(FBPushStats.diamond) +
-            parseInt(FBPushStats.standsWide) +
-            parseInt(FBPushStats.standsShoulder) +
-            parseInt(FBPushStats.decline) +
-            parseInt(FBPushStats.level)
-            FBPushStats.total = total;
-            pushList.push(FBPushStats);
+        const absstats = firebase.database().ref('Abs/' + FBUser.uid);
+        absstats.orderByChild('timestamp').on('child_added',snapshot => {
+          const FBAbsStats = snapshot.val();
+          FBAbsStats.id = snapshot.key;
+          const total = parseInt(FBAbsStats.bicycle) +
+            parseInt(FBAbsStats.jumpingjax) +
+            parseInt(FBAbsStats.kneeHigh) +
+            parseInt(FBAbsStats.legRaises) +
+            parseInt(FBAbsStats.mountClimbers) +
+            parseInt(FBAbsStats.russianTwist) +
+            parseInt(FBAbsStats.scissors) +
+            parseInt(FBAbsStats.sidePlanks) +
+            parseInt(FBAbsStats.sideToSides) +
+            parseInt(FBAbsStats.situps)
+            FBAbsStats.total = total;
+            absList.push(FBAbsStats);
             /*Chart data build*/
-            chartData.labels.push(FBPushStats.date);
+            chartData.labels.push(FBAbsStats.date);
             chartData.datasets[0].data.push(total);
         })
       }
@@ -56,8 +61,8 @@ function PushStats(){
       if(chartData.labels.length > 0){
         setChartData(chartData);
       }
-      if(pushList.length > 0  ){
-        setPushList(pushList);
+      if(absList.length > 0){
+        setAbsList(absList);
       }
     }
   });
@@ -66,9 +71,9 @@ function PushStats(){
   }
   return(
     <div>
-      <h3>Push Stats</h3>
+      <h3>Abs Stats</h3>
       <Line className="mb15" data={chartData}/>
-      {pushList.map((push,i) => {
+      {absList.map((abs,i) => {
         return(
           <div>
             <div className="accordion" onClick={() => {
@@ -79,17 +84,22 @@ function PushStats(){
                 show.style.display = "none";
               }
             }}>
-              {formateDate(push.date)} <span className="sub">{push.total.toString()} push-ups</span>
+              {formateDate(abs.date)} <span className="sub">{abs.total.toString()} mins.</span>
             </div>
             <div id={"panel" + i} className="panel" style={panelStyle}>
               <ul className="none text_right mr30per">
-                <li><span className="bold" >Diamond</span> {push.diamond} reps</li>
-                <li><span className="bold" >Stands Wide</span> {push.standsWide} reps</li>
-                <li><span className="bold" >Stands Shoulder</span> {push.standsShoulder} reps</li>
-                <li><span className="bold" >Decline</span> {push.decline} reps</li>
-                <li><span className="bold" >Level</span> {push.level} reps</li>
+                <li><span className="bold" >Bicycle</span> {abs.bicycle} mins</li>
+                <li><span className="bold" >Jumping Jax</span> {abs.jumpingjax} mins</li>
+                <li><span className="bold" >Knee High</span> {abs.kneeHigh} mins</li>
+                <li><span className="bold" >Leg Raises</span> {abs.legRaises} mins</li>
+                <li><span className="bold" >Mount Climbers</span> {abs.mountClimbers} mins</li>
+                  <li><span className="bold" >Russian Twist</span> {abs.russianTwist} mins</li>
+                  <li><span className="bold" >Scissors</span> {abs.scissors} mins</li>
+                  <li><span className="bold" >Side Planks</span> {abs.sidePlanks} mins</li>
+                  <li><span className="bold" >Side To Sides</span> {abs.sideToSides} mins</li>
+                  <li><span className="bold" >Situps</span> {abs.situps} mins</li>
               </ul>
-              <input type="button" className="center mt10" value="Delete" onClick={e => deleteRecord(e, push.id)}/>
+              <input type="button" className="center mt10" value="Delete" onClick={e => deleteRecord(e, abs.id)}/>
             </div>
           </div>
         )
@@ -98,4 +108,4 @@ function PushStats(){
   )
 }
 
-export default PushStats;
+export default AbsStats;
