@@ -47,8 +47,13 @@ class Spartan extends React.Component {
 	}
 	handleSubmit(e){
 		e.preventDefault();
+		const dateT = new Date(this.state.date).getTime();
+		this.newStates["timestamp"]= dateT;
 		this.newStates["date"] = this.state.date;
 		this.newStates["comments"] = this.state.comments;
+		this.newStates["distance"] = this.state.distance;
+		this.newStates["reps"] = this.state.reps;
+		this.newStates["submit"]=null;
 		const ref = firebase
 			.database()
 			.ref(`Spartan/${this.props.user}`);
@@ -72,13 +77,12 @@ class Spartan extends React.Component {
 		if(this.state.distance > 0 && this.state.reps > 0){
 			const diff = this.state.distance/this.state.reps;
 			this.setState({intervals:diff});
-
 			for(let i = 0;i<diff;i++){
 				let marker = (i + 1) * this.state.reps;
 				this.newStates[`marker${i}`] = marker;
 				this.newStates[`exercise${i}`] = "burpees";
 				this.newStates[`reps${i}`] = "15";
-				this.newStates[`set${i}`] = false;
+			//	this.newStates[`set${i}`] = false;
 			}
 			if(this.newStates.exercise0){
 				this.newStates["submit"]=true;

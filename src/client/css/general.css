@@ -104,6 +104,20 @@ ul.none{
 .mb60{
 	margin-bottom: 60px;
 }
+
+.ml5{
+	margin-left: 5px;
+}
+.mr5{
+	margin-right: 5px;
+}
+
+.pl5{
+	margin-left: 5px !important;
+}
+.pr5{
+	margin-right: 5px !important;
+}
 .center{
 	margin-left: auto;
 	margin-right: auto;
@@ -124,6 +138,12 @@ ul.none{
 	margin-right: 4%;
 	border-radius: 15px;
 	padding:15px 5px;
+}
+.v-center{
+	margin-block-start: 1em;
+	margin-block-end: 1em;
+	margin-inline-start: 0px;
+	margin-inline-end: 0px;
 }
 .frame h2{
     margin: 10px 0px;
@@ -146,6 +166,9 @@ ul.none{
 .mr30per{
 	margin-right: 30%;
 }
+.overflowy{
+	overflow-y: scroll;
+}
 .error{
 	border-radius: 15px;
 	border:#f00 2px solid;
@@ -158,20 +181,23 @@ ul.none{
 	margin-bottom: 10px;
 }
 .sub {
-    font-size: 0.9em;
-    float: right;
-    color: #effffa;
-    margin-right: 30px;
+  font-size: 0.9em;
+  float: right;
+  color: #effffa;
+  margin-right: 30px;
 }
 .form {
-    overflow-y: scroll;
-    overflow-x: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .font_large{
 	font-size: 2.5em;
 }
 .bold{
 	font-weight: bold;
+}
+.normal{
+	font-weight: normal;
 }
 .comments{
 	width: 90%;
@@ -181,5 +207,8 @@ ul.none{
 	margin-right:5%;
 	border-radius: 15px;
 	border:#03c03c 2px solid;
-	padding:5px;
+	padding:10px;
+}
+.b_border{
+	border-bottom:#03c03c 2px solid;
 }
