@@ -5,7 +5,7 @@
 	color: #fff;
 }
 
-.Header span{	
+.Header span{
 	margin:auto auto;
 	font-size:1.5em;
 	font-weight: 200;
@@ -14,10 +14,10 @@
 }
 
 #menu_click{
-	float:left;
-	color: #fff;
-	margin-left: 5px;
-	margin-top: 10px;
+	float: left;
+  color: #fff;
+  margin-top: 5px;
+  width: 60px;
 }
 
 #menu{

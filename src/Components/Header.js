@@ -36,7 +36,7 @@ class Header extends React.Component {
 				});
 			}
 		});
-	
+
 	}
 	logoutUser = e =>{
 		e.preventDefault();
@@ -64,8 +64,8 @@ class Header extends React.Component {
 		return(
 			<div>
 				<div className= 'Header'>
-					<button id= "menu_click" onClick= {this.menuAction} >menu</button>
-					<span>EX_tracker</span>
+					<input type="button" id= "menu_click" onClick= {this.menuAction} value="menu"/>
+					<span>My Training Tracker</span>
 					<div>Welcome {this.state.displayName}{' '}</div>
 				</div>
 				{this.state.showMenu && (

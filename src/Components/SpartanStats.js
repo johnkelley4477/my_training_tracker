@@ -79,11 +79,8 @@ function SpartanStats(props) {
     }
     return intervals
   }
-
   return(
-
     <div>
-
       <h3 className="text_center">Spartan Stats</h3>
       <div className="chart mb15">
         <Line data={chartData}/>

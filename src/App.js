@@ -32,6 +32,7 @@ class App extends Component {
       last: {"Spartan":null, "Pull":null, "Push":null, "Abs":null, "Legs":null}
     }
   }
+
   componentDidMount() {
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
@@ -40,6 +41,7 @@ class App extends Component {
           displayName: FBUser.displayName,
           userID: FBUser.uid
         });
+
         const pulls = firebase.database().ref('Pull/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
         const pushes = firebase.database().ref('Push/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
         const abs = firebase.database().ref('Abs/' + FBUser.uid).orderByChild("timestamp").limitToLast(1);
