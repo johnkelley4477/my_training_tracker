@@ -14,6 +14,30 @@ function formateDate(d){
   var year = date.getFullYear();
   return monthIndex + '/' + day + '/' + year;
 }
+function buildAbsDataset(data){
+  if(data !== undefined){
+    let datasets = [
+      {label:"Seconds",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}
+    ];
+    for(let d in data){
+      datasets[0].data.push(
+        parseInt(data[d].bicycle) +
+        parseInt(data[d].jumpingjax) +
+        parseInt(data[d].kneeHigh) +
+        parseInt(data[d].legRaises) +
+        parseInt(data[d].mountClimbers) +
+        parseInt(data[d].russianTwist) +
+        parseInt(data[d].scissors) +
+        parseInt(data[d].sidePlanks) +
+        parseInt(data[d].sideToSides) +
+        parseInt(data[d].situps)
+      );
+    }
+    return datasets;
+  }else{
+    return false;
+  }
+}
 function buildPullDataset(data){
   if(data !== undefined){
     let datasets = [
@@ -62,6 +86,9 @@ function buildChart(source){
         switch (source) {
           case "Pull":
             chart.datasets = buildPullDataset(FBStats);
+            break;
+          case "Abs":
+            chart.datasets = buildAbsDataset(FBStats);
             break;
           default:
             break;

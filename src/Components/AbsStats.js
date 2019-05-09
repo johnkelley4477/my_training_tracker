@@ -7,9 +7,10 @@ import {navigate} from '@reach/router';
 import firebase from './Firebase';
 /* Client side */
 import '../client/css/accordion.css';
+/* Custom Hooks */
+import useBuildChart from '../Hooks/useBuildChart';
 
 function AbsStats(){
-  const [chartData, setChartData] = useState({});
   const [absList, setAbsList] = useState([]);
   const [userId, setUserId] = useState(null);
   function formateDate(d){
@@ -27,10 +28,6 @@ function AbsStats(){
 		navigate('/stats/abs');
   }
   useEffect(() => {
-    let chartData = {
-      labels:[],
-      datasets:[{label:"Total Abs work min",data:[],backgroundColor:['rgba(0,255,255,0.5)']}]
-    }
     let absList = [];
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
@@ -39,7 +36,7 @@ function AbsStats(){
         absstats.orderByChild('timestamp').on('child_added',snapshot => {
           const FBAbsStats = snapshot.val();
           FBAbsStats.id = snapshot.key;
-          const total = parseInt(FBAbsStats.bicycle) +
+          FBAbsStats.total = ((parseInt(FBAbsStats.bicycle) +
             parseInt(FBAbsStats.jumpingjax) +
             parseInt(FBAbsStats.kneeHigh) +
             parseInt(FBAbsStats.legRaises) +
@@ -49,18 +46,12 @@ function AbsStats(){
             parseInt(FBAbsStats.sidePlanks) +
             parseInt(FBAbsStats.sideToSides) +
             parseInt(FBAbsStats.situps)
-            FBAbsStats.total = total;
-            absList.push(FBAbsStats);
-            /*Chart data build*/
-            chartData.labels.push(FBAbsStats.date);
-            chartData.datasets[0].data.push(total);
+          )/60).toFixed(2);
+          absList.push(FBAbsStats);
         })
       }
     })
     return () => {
-      if(chartData.labels.length > 0){
-        setChartData(chartData);
-      }
       if(absList.length > 0){
         setAbsList(absList);
       }
@@ -72,10 +63,10 @@ function AbsStats(){
   return(
     <div>
       <h3>Abs Stats</h3>
-      <Line className="mb15" data={chartData}/>
+      <Line className="mb15" data={useBuildChart('Abs')}/>
       {absList.map((abs,i) => {
         return(
-          <div>
+          <div key={i.toString()}>
             <div className="accordion" onClick={() => {
               let show = document.getElementById(`panel${i}`);
               if(show.style.display === "none"){
@@ -93,11 +84,11 @@ function AbsStats(){
                 <li><span className="bold" >Knee High</span> {abs.kneeHigh} mins</li>
                 <li><span className="bold" >Leg Raises</span> {abs.legRaises} mins</li>
                 <li><span className="bold" >Mount Climbers</span> {abs.mountClimbers} mins</li>
-                  <li><span className="bold" >Russian Twist</span> {abs.russianTwist} mins</li>
-                  <li><span className="bold" >Scissors</span> {abs.scissors} mins</li>
-                  <li><span className="bold" >Side Planks</span> {abs.sidePlanks} mins</li>
-                  <li><span className="bold" >Side To Sides</span> {abs.sideToSides} mins</li>
-                  <li><span className="bold" >Situps</span> {abs.situps} mins</li>
+                <li><span className="bold" >Russian Twist</span> {abs.russianTwist} mins</li>
+                <li><span className="bold" >Scissors</span> {abs.scissors} mins</li>
+                <li><span className="bold" >Side Planks</span> {abs.sidePlanks} mins</li>
+                <li><span className="bold" >Side To Sides</span> {abs.sideToSides} mins</li>
+                <li><span className="bold" >Situps</span> {abs.situps} mins</li>
               </ul>
               <input type="button" className="center mt10" value="Delete" onClick={e => deleteRecord(e, abs.id)}/>
             </div>
