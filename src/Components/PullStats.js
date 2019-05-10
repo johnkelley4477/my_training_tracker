@@ -1,14 +1,15 @@
 /* Third party*/
 import React, {useState, useEffect} from 'react';
-import { Line } from 'react-chartjs-2';
 import {navigate} from '@reach/router';
 //import {navigate} from '@reach/router';
 /* Components */
 import firebase from './Firebase';
 /* Client side */
 import '../client/css/accordion.css';
+/* Helpers */
+import formatDate from '../Helpers/formatDateReadable';
 /* Custom Hooks */
-import useBuildChart from '../Hooks/useBuildChart';
+import UseBuildChart from '../Hooks/useBuildChart';
 
 function PullStats(props) {
   const [userID, setUserId] = useState(props.user);
@@ -45,7 +46,7 @@ function PullStats(props) {
     <div>
       <h3 className="text_center">Pulls</h3>
       <div className="chart mb15">
-        <Line data={useBuildChart("Pull")}/>
+        <UseBuildChart exercise="Pull"/>
       </div>
       {pullsList.length > 0 &&
         <div>
@@ -60,7 +61,7 @@ function PullStats(props) {
                       show.style.display = "none";
                     }
                   }}>
-                    {pull.date}
+                    {formatDate(pull.date)}
                 </div>
                 <div id={"panel" + i} className="panel" style={panelStyle}>
                   <h3 className="text_center">Pull Ups set 1</h3>

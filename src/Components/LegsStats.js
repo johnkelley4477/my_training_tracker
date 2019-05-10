@@ -1,25 +1,18 @@
 /* Third party*/
 import React, {useState, useEffect} from 'react';
-import { Line } from 'react-chartjs-2';
 import {navigate} from '@reach/router';
-//import {navigate} from '@reach/router';
 /* Components */
 import firebase from './Firebase';
 /* Client side */
 import '../client/css/accordion.css';
+/* Custom Hooks */
+import UseBuildChart from '../Hooks/useBuildChart';
+/* Helpers */
+import formatDate from '../Helpers/formatDateReadable';
 
-function LegsStats(){
-  const [chartData, setChartData] = useState({});
+function LegsStats(props){
   const [legsList, setLegsList] = useState([]);
   const [userId, setUserId] = useState(null);
-  function eDate(d){
-    const dsplit = d.split('-');
-    const date = new Date(dsplit[0] + "," + dsplit[1] + "," + dsplit[2]);
-    var day = date.getDate();
-    var monthIndex = date.getMonth() + 1;
-    var year = date.getFullYear();
-    return monthIndex + '/' + day + '/' + year;
-  }
   function deleteRecord(e,id) {
     e.preventDefault();
     const ref = firebase.database().ref(`Legs/${userId}/${id}`);
@@ -27,44 +20,19 @@ function LegsStats(){
 		navigate('/stats/legs');
   }
   useEffect(() => {
-    let chartData = {labels:[],datasets:[
-      {label:"Lunge reps",data:[],backgroundColor:['rgba(0,255,255,0.5)']},
-      {label:"Squat reps",data:[],backgroundColor:['rgba(255,0,0,0.5)']},
-      {label:"Bucket carry distance",data:[],backgroundColor:['rgba(0,255,0,0.5)']}
-    ]};
     let legsList = [];
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
-        setUserId(FBUser.uid);
-        const legsstats = firebase.database().ref('Legs/' + FBUser.uid).orderByChild('timestamp');
+        setUserId(props.user);
+        const legsstats = firebase.database().ref('Legs/' + userId).orderByChild('timestamp');
         legsstats.on('child_added',snapshot => {
           const FBLegsStats = snapshot.val();
           FBLegsStats.id = snapshot.key;
           legsList.push(FBLegsStats);
-          /* Build out chart data */
-          chartData.labels.push(eDate(FBLegsStats.date));
-          chartData.datasets[0].data.push(
-            parseInt(FBLegsStats.lungeSet1) +
-            parseInt(FBLegsStats.lungeSet2) +
-            parseInt(FBLegsStats.lungeSet3)
-          );
-          chartData.datasets[1].data.push(
-            parseInt(FBLegsStats.squatSet1) +
-            parseInt(FBLegsStats.squatSet2) +
-            parseInt(FBLegsStats.squatSet3)
-          )
-          chartData.datasets[2].data.push(
-            parseFloat(FBLegsStats.bucketCarrySet1) +
-            parseFloat(FBLegsStats.bucketCarrySet2) +
-            parseFloat(FBLegsStats.bucketCarrySet3)
-          )
         });
       }
     });
     return () => {
-      if(chartData.labels.length > 0){
-        setChartData(chartData);
-      }
       if(legsList.length > 0  ){
         setLegsList(legsList);
       }
@@ -74,12 +42,12 @@ function LegsStats(){
     display: "none"
   }
   return(
-    <div>
+    <div >
       <h3>Legs Stats</h3>
-      <Line className="mb15" data={chartData}/>
+      <UseBuildChart exercise='Legs'/>
       {legsList.map((legs,i) => {
         return(
-          <div>
+          <div key={i.toString()}>
             <div className="accordion" onClick={() => {
               let show = document.getElementById(`panel${i}`);
               if(show.style.display === "none"){
@@ -88,7 +56,7 @@ function LegsStats(){
                 show.style.display = "none";
               }
             }}>
-              {eDate(legs.date)}
+              {formatDate(legs.date)}
             </div>
             <div id={"panel" + i} className="panel" style={panelStyle}>
               <h3 className="text_center">Set 1</h3>

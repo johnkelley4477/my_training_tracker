@@ -1,26 +1,18 @@
 /* Third party*/
 import React, {useState, useEffect} from 'react';
-import { Line } from 'react-chartjs-2';
 import {navigate} from '@reach/router';
-//import {navigate} from '@reach/router';
 /* Components */
 import firebase from './Firebase';
 /* Client side */
 import '../client/css/accordion.css';
 /* Custom Hooks */
-import useBuildChart from '../Hooks/useBuildChart';
+import UseBuildChart from '../Hooks/useBuildChart';
+/* Helpers */
+import formatDate from '../Helpers/formatDateReadable';
 
 function AbsStats(){
   const [absList, setAbsList] = useState([]);
   const [userId, setUserId] = useState(null);
-  function formateDate(d){
-    const dsplit = d.split('-');
-    const date = new Date(dsplit[0] + "," + dsplit[1] + "," + dsplit[2]);
-    var day = date.getDate();
-    var monthIndex = date.getMonth() + 1;
-    var year = date.getFullYear();
-    return monthIndex + '/' + day + '/' + year;
-  }
   function deleteRecord(e,id) {
     e.preventDefault();
     const ref = firebase.database().ref(`Abs/${userId}/${id}`);
@@ -63,7 +55,7 @@ function AbsStats(){
   return(
     <div>
       <h3>Abs Stats</h3>
-      <Line className="mb15" data={useBuildChart('Abs')}/>
+      <UseBuildChart exercise='Abs'/>
       {absList.map((abs,i) => {
         return(
           <div key={i.toString()}>
@@ -75,7 +67,7 @@ function AbsStats(){
                 show.style.display = "none";
               }
             }}>
-              {formateDate(abs.date)} <span className="sub">{abs.total.toString()} mins.</span>
+              {formatDate(abs.date)} <span className="sub">{abs.total.toString()} mins.</span>
             </div>
             <div id={"panel" + i} className="panel" style={panelStyle}>
               <ul className="none text_right mr30per">

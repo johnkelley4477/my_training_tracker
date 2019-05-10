@@ -1,23 +1,48 @@
 /* Third party */
-import {useState,useEffect} from 'react';
+import React, {useState,useEffect} from 'react';
+import { Line } from 'react-chartjs-2';
 /* Components */
 import firebase from '../Components/Firebase';
+/* Helpers */
+import formatDate from '../Helpers/formatDateReadable';
 
 function getColor(){
   return Math.floor(Math.random() * 255);
 }
-function formateDate(d){
-  const dsplit = d.split('-');
-  const date = new Date(dsplit[0] + "," + dsplit[1] + "," + dsplit[2]);
-  var day = date.getDate();
-  var monthIndex = date.getMonth() + 1;
-  var year = date.getFullYear();
-  return monthIndex + '/' + day + '/' + year;
+const bg = `rgba(${getColor()},${getColor()},${getColor()},0.5)`;
+function buildLegsDataset(data){
+    if(data !== undefined){
+      let datasets = [
+        {label:"Lunge reps",data:[],backgroundColor:[bg]},
+        {label:"Squat reps",data:[],backgroundColor:[bg]},
+        {label:"Bucket carry distance",data:[],backgroundColor:[bg]}
+      ]
+      for(let d in data){
+        datasets[0].data.push(
+          parseInt(data[d].lungeSet1) +
+          parseInt(data[d].lungeSet2) +
+          parseInt(data[d].lungeSet3)
+        );
+        datasets[1].data.push(
+          parseInt(data[d].squatSet1) +
+          parseInt(data[d].squatSet2) +
+          parseInt(data[d].squatSet3)
+        );
+        datasets[2].data.push(
+          parseFloat(data[d].bucketCarrySet1) +
+          parseFloat(data[d].bucketCarrySet2) +
+          parseFloat(data[d].bucketCarrySet3)
+        );
+      }
+      return datasets;
+    }else{
+      return false;
+    }
 }
 function buildAbsDataset(data){
   if(data !== undefined){
     let datasets = [
-      {label:"Seconds",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}
+      {label:"Seconds",data:[],backgroundColor:[bg]}
     ];
     for(let d in data){
       datasets[0].data.push(
@@ -41,9 +66,9 @@ function buildAbsDataset(data){
 function buildPullDataset(data){
   if(data !== undefined){
     let datasets = [
-      {label:"Climbs reps",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]},
-      {label:"Total pullups",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]},
-      {label:"Avg hang time",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}
+      {label:"Climbs reps",data:[],backgroundColor:[bg]},
+      {label:"Total pullups",data:[],backgroundColor:[bg]},
+      {label:"Avg hang time",data:[],backgroundColor:[bg]}
     ];
     for(let d in data){
       datasets[0].data.push(parseInt(data[d].rope));
@@ -70,7 +95,8 @@ function buildPullDataset(data){
     return false;
   }
 }
-function buildChart(source){
+function buildChart(props){
+  const source= props.exercise;
   const [chartData, setChartData] = useState({});
   useEffect(() => {
     let chart = {labels:[],datasets:[]};
@@ -80,18 +106,23 @@ function buildChart(source){
         let FBStats = [];
         stats.on('child_added',snapshot => {
           const FBStat = snapshot.val();
-          chart.labels.push(formateDate(FBStat.date));
+          chart.labels.push(formatDate(FBStat.date));
           FBStats.push(FBStat);
         });
-        switch (source) {
-          case "Pull":
-            chart.datasets = buildPullDataset(FBStats);
-            break;
-          case "Abs":
-            chart.datasets = buildAbsDataset(FBStats);
-            break;
-          default:
-            break;
+        if (FBStats.length > 0) {
+          switch (source) {
+            case "Pull":
+              chart.datasets = buildPullDataset(FBStats);
+              break;
+            case "Abs":
+              chart.datasets = buildAbsDataset(FBStats);
+              break;
+            case "Legs":
+              chart.datasets = buildLegsDataset(FBStats);
+              break;
+            default:
+              break;
+          }
         }
       }
     });
@@ -100,8 +131,11 @@ function buildChart(source){
         setChartData(chart);
     }
   });
-  if(chartData !== {})
-    return chartData;
+  if(chartData !== {}){
+    return (
+      <Line data={chartData}/>
+    );
+  }
 }
 
 export default buildChart;
