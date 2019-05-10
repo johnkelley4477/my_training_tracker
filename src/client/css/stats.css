@@ -1,0 +1,14 @@
+.stats h2 {
+    position: relative;
+    top: 115px;
+}
+.stats{
+  max-height: 150px;
+}
+h1{
+  color: #000;
+}
+.stats canvas{
+  border-bottom: #000 solid 2px;
+  max-height: 150px;
+}

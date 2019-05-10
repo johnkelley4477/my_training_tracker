@@ -5,7 +5,7 @@ import StatsItem from './StatsItem';
 function Stats (props) {
   return(
     <div>
-        <h3>Statistics</h3>
+        <h1 className="text_center">Statistics</h1>
         <StatsItem date={props.last.Pull} exercise="Pull" />
         <StatsItem date={props.last.Push} exercise="Push" />
         <StatsItem date={props.last.Abs} exercise="Abs" />

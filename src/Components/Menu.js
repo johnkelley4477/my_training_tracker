@@ -13,7 +13,7 @@ class Menu extends React.Component {
 		return(
 			<div id= 'menu'>
 				<Link to='/' onClick={closeMenu}>Home</Link>
-				<Link to='/stats' onClick={closeMenu}>Stats</Link>
+				<a href='/stats' onClick={closeMenu}>Stats</a>
 				<Link to='/settings' onClick={closeMenu} >Settings</Link>
 				<Link to='/login' onClick= {e => logoutControl(e)}>Logout</Link>
 			</div>

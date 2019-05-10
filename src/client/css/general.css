@@ -36,6 +36,10 @@ label{
 body{
 	font-family: sans-serif;
 	margin: 0px;
+	background: #fff;
+}
+a{
+	color: #000;
 }
 ul.none{
 	list-style-type: none;
