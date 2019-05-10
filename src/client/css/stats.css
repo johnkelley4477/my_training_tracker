@@ -5,8 +5,10 @@
 .stats{
   max-height: 150px;
 }
-h1{
+.stat h1{
   color: #000;
+  margin-bottom: -50px;
+  font-size: 3.5em
 }
 .stats canvas{
   border-bottom: #000 solid 2px;

@@ -19,7 +19,7 @@ function SpartanStats(props) {
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
         setUserId(FBUser.uid);
-        const spartanstats = firebase.database().ref('Spartan/' + FBUser.uid).orderByChild('timestamp');
+        const spartanstats = firebase.database().ref('Spartan/' + FBUser.uid).orderByChild('timestamp').limitToLast(10);
         spartanstats.on('child_added',snapshot => {
           const FBSpartanStats = snapshot.val();
           FBSpartanStats.id = snapshot.key;
@@ -29,7 +29,7 @@ function SpartanStats(props) {
     });
     return () => {
       if(spartanList.length > 0  ){
-        setSpartanList(spartanList);
+        setSpartanList(spartanList.reverse());
       }
     }
   })
@@ -47,7 +47,7 @@ function SpartanStats(props) {
     const count = spartan.distance / spartan.reps;
     for (var i = 0; i < count; i++) {
       intervals.push(
-        <div className="b_border">
+        <div key={"key" + i.toString()} className="b_border">
           <span className="grid-parent v-center bold text_right pr5">Mile {spartan[`marker${i}`]}</span>
           <span className="text_left v-center grid-parent normal pl5">{spartan[`reps${i}`]} {spartan[`exercise${i}`]}</span>
         </div>

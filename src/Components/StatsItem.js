@@ -1,7 +1,5 @@
 /* Third Party */
 import React from 'react';
-/* Client Side CSS */
-import '../client/css/stats.css';
 /* Custom Hooks */
 import UseBuildChart from '../Hooks/useBuildChart';
 

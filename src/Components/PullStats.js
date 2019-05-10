@@ -19,7 +19,7 @@ function PullStats(props) {
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
         setUserId(props.user);
-        const pullstats = firebase.database().ref('Pull/' + userID).orderByChild('timestamp');
+        const pullstats = firebase.database().ref('Pull/' + userID).orderByChild('timestamp').limitToLast(10);
         pullstats.on('child_added',snapshot => {
           const FBPullsStats = snapshot.val();
           FBPullsStats.id = snapshot.key;
@@ -29,7 +29,7 @@ function PullStats(props) {
     });
     return () => {
       if(pullsList.length > 0  ){
-        setPullsList(pullsList);
+        setPullsList(pullsList.reverse());
       }
     }
   })

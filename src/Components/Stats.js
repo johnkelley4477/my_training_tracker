@@ -2,9 +2,11 @@
 import React from 'react';
 /* Components */
 import StatsItem from './StatsItem';
+/* Client Side CSS */
+import '../client/css/stats.css';
 function Stats (props) {
   return(
-    <div>
+    <div className="stat">
         <h1 className="text_center">Statistics</h1>
         <StatsItem date={props.last.Pull} exercise="Pull" />
         <StatsItem date={props.last.Push} exercise="Push" />

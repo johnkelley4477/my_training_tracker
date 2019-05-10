@@ -24,7 +24,7 @@ function LegsStats(props){
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
         setUserId(props.user);
-        const legsstats = firebase.database().ref('Legs/' + userId).orderByChild('timestamp');
+        const legsstats = firebase.database().ref('Legs/' + userId).orderByChild('timestamp').limitToLast(10);
         legsstats.on('child_added',snapshot => {
           const FBLegsStats = snapshot.val();
           FBLegsStats.id = snapshot.key;
@@ -34,7 +34,7 @@ function LegsStats(props){
     });
     return () => {
       if(legsList.length > 0  ){
-        setLegsList(legsList);
+        setLegsList(legsList.reverse());
       }
     }
   });

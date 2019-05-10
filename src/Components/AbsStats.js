@@ -25,7 +25,7 @@ function AbsStats(){
       if(FBUser){
         setUserId(FBUser.uid);
         const absstats = firebase.database().ref('Abs/' + FBUser.uid);
-        absstats.orderByChild('timestamp').on('child_added',snapshot => {
+        absstats.orderByChild('timestamp').limitToLast(10).on('child_added',snapshot => {
           const FBAbsStats = snapshot.val();
           FBAbsStats.id = snapshot.key;
           FBAbsStats.total = ((parseInt(FBAbsStats.bicycle) +
@@ -45,7 +45,7 @@ function AbsStats(){
     })
     return () => {
       if(absList.length > 0){
-        setAbsList(absList);
+        setAbsList(absList.reverse());
       }
     }
   });
@@ -55,7 +55,7 @@ function AbsStats(){
   return(
     <div>
       <h3>Abs Stats</h3>
-      <UseBuildChart exercise='Abs'/>
+      <UseBuildChart exercise='Abs' min='false'/>
       {absList.map((abs,i) => {
         return(
           <div key={i.toString()}>

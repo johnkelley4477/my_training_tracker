@@ -26,7 +26,7 @@ function PushStats(props){
       if(FBUser){
         setUserId(props.user);
         const pushstats = firebase.database().ref(`Push/${userId}`);
-        pushstats.orderByChild('timestamp').on('child_added',snapshot => {
+        pushstats.orderByChild('timestamp').limitToLast(10).on('child_added',snapshot => {
           const FBPushStats = snapshot.val();
           FBPushStats.id = snapshot.key;
           const total = parseInt(FBPushStats.diamond) +
@@ -41,7 +41,7 @@ function PushStats(props){
     })
     return () => {
       if(pushList.length > 0  ){
-        setPushList(pushList);
+        setPushList(pushList.reverse());
       }
     }
   });

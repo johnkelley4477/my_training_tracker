@@ -13,8 +13,8 @@ let options = {}
 function buildSpartanDataset(data){
   if (data !== undefined) {
     let datasets = [
-      {label:"Distance",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]},
-      {label:"Burpees",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}
+      {label:"Distance",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]},
+      {label:"Burpees",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]}
     ]
     for (let d in data) {
       let burpees = 0;
@@ -34,7 +34,7 @@ function buildSpartanDataset(data){
 }
 function buildPushDataset(data){
   if (data !== undefined) {
-    let datasets = [{label:"Total push ups",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}];
+    let datasets = [{label:"Total push ups",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]}];
     for(let d in data){
       datasets[0].data.push(
         parseInt(data[d].diamond) +
@@ -52,9 +52,9 @@ function buildPushDataset(data){
 function buildLegsDataset(data){
     if(data !== undefined){
       let datasets = [
-        {label:"Lunge reps",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]},
-        {label:"Squat reps",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]},
-        {label:"Bucket carry distance",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}
+        {label:"Lunge reps",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]},
+        {label:"Squat reps",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]},
+        {label:"Bucket carry distance",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]}
       ]
       for(let d in data){
         datasets[0].data.push(
@@ -81,7 +81,7 @@ function buildLegsDataset(data){
 function buildAbsDataset(data){
   if(data !== undefined){
     let datasets = [
-      {label:"Seconds",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}
+      {label:"Seconds",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]}
     ];
     for(let d in data){
       datasets[0].data.push(
@@ -105,9 +105,9 @@ function buildAbsDataset(data){
 function buildPullDataset(data){
   if(data !== undefined){
     let datasets = [
-      {label:"Climbs reps",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]},
-      {label:"Total pullups",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]},
-      {label:"Avg hang time",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.2)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`]}
+      {label:"Climbs reps",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]},
+      {label:"Total pullups",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]},
+      {label:"Avg hang time",data:[],backgroundColor:[`rgba(${getColor()},${getColor()},${getColor()},0.5)`],borderColor:[`rgba(${getColor()},${getColor()},${getColor()},1)`]}
     ];
     for(let d in data){
       datasets[0].data.push(parseInt(data[d].rope));
@@ -157,10 +157,10 @@ function buildChart(props){
     }
   }
   useEffect(() => {
-    let chart = {labels:[],datasets:[],legend: {display: false,}};
+    let chart = {labels:[],datasets:[]};
     firebase.auth().onAuthStateChanged(FBUser => {
       if(FBUser){
-        const stats = firebase.database().ref(`${source}/${FBUser.uid}`).orderByChild('timestamp');
+        const stats = firebase.database().ref(`${source}/${FBUser.uid}`).orderByChild('timestamp').limitToLast(10);
         let FBStats = [];
         stats.on('child_added',snapshot => {
           const FBStat = snapshot.val();
