@@ -10,6 +10,28 @@ function getColor(){
   return Math.floor(Math.random() * 255);
 }
 const bg = `rgba(${getColor()},${getColor()},${getColor()},0.5)`;
+function buildSpartanDataset(data){
+  if (data !== undefined) {
+
+  }
+}
+function buildPushDataset(data){
+  if (data !== undefined) {
+    let datasets = [{label:"Total push ups",data:[],backgroundColor:[bg]}];
+    for(let d in data){
+      datasets[0].data.push(
+        parseInt(data[d].diamond) +
+        parseInt(data[d].standsWide) +
+        parseInt(data[d].standsShoulder) +
+        parseInt(data[d].decline) +
+        parseInt(data[d].level)
+      );
+    }
+    return datasets;
+  }else{
+    return false;
+  }
+}
 function buildLegsDataset(data){
     if(data !== undefined){
       let datasets = [
@@ -119,6 +141,12 @@ function buildChart(props){
               break;
             case "Legs":
               chart.datasets = buildLegsDataset(FBStats);
+              break;
+            case "Push":
+              chart.datasets = buildPushDataset(FBStats);
+              break;
+            case "Spartan":
+              chart.datasets = buildPushDataset(FBStats);
               break;
             default:
               break;
