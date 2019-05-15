@@ -1,5 +1,5 @@
 /* Third Party */
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {navigate} from '@reach/router';
 /* Components */
 import firebase from './Firebase';
@@ -24,7 +24,6 @@ function Abs(props){
 	const [sidePlanks, setSidePlanks]= useState(0);
 	const [mountClimbers,setMountClimbers]= useState(0);
 	const [bicycle,setBicycle]= useState(0);
-	const [totalSec,setTotalSec]= useState(0);
 	const [secPerRep,setSecPerRep]= useState(30);
 	const [comments,setComments]= useState("How'd it go?");
 function stepper(){
@@ -38,8 +37,7 @@ function stepper(){
 			setSideToSides,
 			setSidePlanks,
 			setMountClimbers,
-			setBicycle,
-			setTotalSec];
+			setBicycle];
 		let exeInc = 0;
 		let secCount = 0
 		let step = setInterval(() =>{
