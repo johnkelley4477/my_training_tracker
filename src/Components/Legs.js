@@ -1,136 +1,110 @@
 /* Third Party */
-import React from 'react';
+import React, {useState} from 'react';
 import {navigate} from '@reach/router';
 /* Components */
 import firebase from './Firebase';
+/* Helper */
+import formatDate from '../Helpers/formatDateForCal';
 /* Client side */
 import '../client/css/accordion.css';
 
-class Legs extends React.Component {
-	//const {userID} = this.props
-	constructor(){
-		super();
-		this.state = {
-			date: this.formatDate(new Date()),
-			lungeSet1:0,
-			squatSet1:0,
-			bucketCarrySet1:0,
-			lungeSet2:0,
-			squatSet2:0,
-			bucketCarrySet2:0,
-			lungeSet3:0,
-			squatSet3:0,
-			bucketCarrySet3:0,
-			set1:false,
-			set2:false,
-			set3:false,
-			comments:"How'd it go?"
-		}
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-	handleChange(e){
+function Legs(props) {
+	const [date,setDate]= useState(() => {
+		const initialState = formatDate(new Date());
+		return initialState;
+	});
+	const [lungeSet1,setLungeSet1]= useState(0);
+	const [squatSet1,setSquatSet1]= useState(0);
+	const [bucketCarrySet1,setBucketCarrySet1]= useState(0);
+	const [lungeSet2,setLungeSet2]= useState(0);
+	const [squatSet2,setSquatSet2]= useState(0);
+	const [bucketCarrySet2,setBucketCarrySet2]= useState(0);
+	const [lungeSet3,setLungeSet3]= useState(0);
+	const [squatSet3,setSquatSet3]= useState(0);
+	const [bucketCarrySet3,setBucketCarrySet3]= useState(0);
+	const [comments,setComments]= useState("How'd it go?");
+	function handleSubmit(e){
 		e.preventDefault();
-		const itemName = e.target.name;
-		const itemValue = e.target.value;
-		this.setState({[itemName]: itemValue},() => {
-			if(this.state.email !== '' && this.state.password !== ''){
-				this.setState({isEnabled: true});
-			}
-		});
-	}
-	panelSwitch(panel,stateString){
-		this.setState({
-			set1:false,
-			set2:false,
-			set3:false
-		});
-		let state = {};
-		if(panel){
-			state[stateString]= false;
-		}else{
-			state[stateString]= true;
-		}
-		this.setState(state);
-	}
-	handleSubmit(e){
-		e.preventDefault();
-		const dateT = new Date(this.state.date).getTime();
+		const dateT = new Date(date).getTime();
 		const legs = {
 			timestamp: dateT,
-			date: this.state.date,
-			lungeSet1: this.state.lungeSet1,
-			squatSet1: this.state.squatSet1,
-			bucketCarrySet1: this.state.bucketCarrySet1,
-			lungeSet2: this.state.lungeSet2,
-			squatSet2: this.state.squatSet2,
-			bucketCarrySet2: this.state.bucketCarrySet2,
-			lungeSet3: this.state.lungeSet3,
-			squatSet3: this.state.squatSet3,
-			bucketCarrySet3: this.state.bucketCarrySet3,
-			comments: this.state.comments
+			date: date,
+			lungeSet1: lungeSet1,
+			squatSet1: squatSet1,
+			bucketCarrySet1: bucketCarrySet1,
+			lungeSet2: lungeSet2,
+			squatSet2: squatSet2,
+			bucketCarrySet2: bucketCarrySet2,
+			lungeSet3: lungeSet3,
+			squatSet3: squatSet3,
+			bucketCarrySet3: bucketCarrySet3,
+			comments: comments
 		}
 		const ref = firebase
 			.database()
-			.ref(`Legs/${this.props.user}`);
+			.ref(`Legs/${props.user}`);
 		ref.push(legs);
 		navigate('/stats/legs');
 	}
-	formatDate(date){
-		var d = date,
-		    month = '' + (d.getMonth() + 1),
-		    day = '' + d.getDate(),
-		    year = d.getFullYear();
-
-		if (month.length < 2) month = '0' + month;
-		if (day.length < 2) day = '0' + day;
-		return [year, month, day].join('-');
-	}
-
-	render(){
-
-		return(
-			<form onSubmit= {e => {this.handleSubmit(e)}} className="form">
-				<h2>Leg Workout</h2>
-				<input type="date" id="date" name="date" value={this.state.date} className="mt15 mb15 center" onChange={this.handleChange}/>
-				<div className="accordion" onClick={() => this.panelSwitch(this.state.set1, "set1")}>Set 1</div>
-				{this.state.set1 && (
-					<div className="panel">
-						<label htmlFor="lungeSet1">Lunge</label>
-						<input type="number" id="lungeSet1"  name="lungeSet1" value={this.state.lungeSet1} className="mt15" onChange={this.handleChange}/>
-						<label htmlFor="squatSet1">Squats</label>
-						<input type="number" id="squatSet1" name="squatSet1" value={this.state.squatSet1} className="mt15" onChange={this.handleChange}/>
-						<label htmlFor="bucketCarrySet1">Bucket Carry</label>
-						<input type="number" id="bucketCarrySet1" name="bucketCarrySet1" value={this.state.bucketCarrySet1} className="mt15" onChange={this.handleChange}/>
-					</div>
-				)}
-				<div className="accordion" onClick={() => this.panelSwitch(this.state.set2, "set2")}>Set 2</div>
-				{this.state.set2 && (
-					<div className="panel">
-						<label htmlFor="lungeSet2">Lunge</label>
-						<input type="number" id="lungeSet2"  name="lungeSet2" value={this.state.lungeSet2} className="mt15" onChange={this.handleChange}/>
-						<label htmlFor="squatSet2">Squats</label>
-						<input type="number" id="squatSet2" name="squatSet2" value={this.state.squatSet2} className="mt15" onChange={this.handleChange}/>
-						<label htmlFor="bucketCarrySet2">Bucket Carry</label>
-						<input type="number" id="bucketCarrySet2" name="bucketCarrySet2" value={this.state.bucketCarrySet2} className="mt15" onChange={this.handleChange}/>
-					</div>
-				)}
-				<div className="accordion" onClick={() => this.panelSwitch(this.state.set3, "set3")}>Set 3</div>
-				{this.state.set3 && (
-					<div className="panel">
-						<label htmlFor="lungeSet3">Lunge</label>
-						<input type="number" id="lungeSet3"  name="lungeSet3" value={this.state.lungeSet3} className="mt15" onChange={this.handleChange}/>
-						<label htmlFor="squatSet3">Squats</label>
-						<input type="number" id="squatSet3" name="squatSet3" value={this.state.squatSet3} className="mt15" onChange={this.handleChange}/>
-						<label htmlFor="bucketCarrySet3">Bucket Carry</label>
-						<input type="number" id="bucketCarrySet3" name="bucketCarrySet3" value={this.state.bucketCarrySet3} className="mt15" onChange={this.handleChange}/>
-					</div>
-				)}
-				<textarea className="comments mt15" id="comments" name="comments" value={this.state.comments} onChange={this.handleChange}/>
-				<input type="submit" className="mt15 mb15"/>
-			</form>
-		)
-	}
+	let panelStyle = {
+    display: "none"
+  }
+	return(
+		<form onSubmit= {e => {handleSubmit(e)}} className="form">
+			<h2>Leg Workout</h2>
+			<input type="date" id="date" name="date" value={date} className="mt15 mb15 center" onChange={() => setDate(document.getElementById('date').value)}/>
+			<div className="accordion" onClick={() => {
+				let show = document.getElementById("panel1");
+				if(show.style.display === "none"){
+						show.style.display = "block";
+					}else{
+						show.style.display = "none";
+					}
+				}}>Set 1</div>
+			<div id="panel1" className="panel" style={panelStyle}>
+				<label htmlFor="lungeSet1">Lunge</label>
+				<input type="number" id="lungeSet1"  name="lungeSet1" value={lungeSet1} className="mt15" onChange={() => setLungeSet1(document.getElementById('lungeSet1').value)}/>
+				<label htmlFor="squatSet1">Squats</label>
+				<input type="number" id="squatSet1" name="squatSet1" value={squatSet1} className="mt15" onChange={() => setSquatSet1(document.getElementById('squatSet1').value)}/>
+				<label htmlFor="bucketCarrySet1">Bucket Carry</label>
+				<input type="number" id="bucketCarrySet1" name="bucketCarrySet1" value={bucketCarrySet1} className="mt15" onChange={() => setBucketCarrySet1(document.getElementById('bucketCarrySet1').value)}/>
+			</div>
+			<div className="accordion" onClick={() => {
+				let show = document.getElementById("panel2");
+				if(show.style.display === "none"){
+						show.style.display = "block";
+					}else{
+						show.style.display = "none";
+					}
+				}}>Set 2</div>
+			<div id="panel2" className="panel" style={panelStyle}>
+				<label htmlFor="lungeSet2">Lunge</label>
+				<input type="number" id="lungeSet2"  name="lungeSet2" value={lungeSet2} className="mt15" onChange={() => setLungeSet2(document.getElementById('lungeSet2').value)}/>
+				<label htmlFor="squatSet2">Squats</label>
+				<input type="number" id="squatSet2" name="squatSet2" value={squatSet2} className="mt15" onChange={() => setSquatSet2(document.getElementById('squatSet2').value)}/>
+				<label htmlFor="bucketCarrySet2">Bucket Carry</label>
+				<input type="number" id="bucketCarrySet2" name="bucketCarrySet2" value={bucketCarrySet2} className="mt15" onChange={() => setBucketCarrySet2(document.getElementById('bucketCarrySet2').value)}/>
+			</div>
+			<div className="accordion" onClick={() => {
+				let show = document.getElementById("panel3");
+				if(show.style.display === "none"){
+						show.style.display = "block";
+					}else{
+						show.style.display = "none";
+					}
+				}}>Set 3</div>
+			<div id="panel3" className="panel" style={panelStyle}>
+				<label htmlFor="lungeSet3">Lunge</label>
+				<input type="number" id="lungeSet3"  name="lungeSet3" value={lungeSet3} className="mt15" onChange={() => setLungeSet3(document.getElementById('lungeSet3').value)}/>
+				<label htmlFor="squatSet3">Squats</label>
+				<input type="number" id="squatSet3" name="squatSet3" value={squatSet3} className="mt15" onChange={() => setSquatSet3(document.getElementById('squatSet3').value)}/>
+				<label htmlFor="bucketCarrySet3">Bucket Carry</label>
+				<input type="number" id="bucketCarrySet3" name="bucketCarrySet3" value={bucketCarrySet3} className="mt15" onChange={() => setBucketCarrySet3(document.getElementById('bucketCarrySet3').value)}/>
+			</div>
+			<textarea className="comments mt15" id="comments" name="comments" value={comments} onChange={() => setComments(document.getElementById('comments').value)}/>
+			<input type="submit" className="mt15 mb15"/>
+		</form>
+	)
 }
 
 export default Legs;
